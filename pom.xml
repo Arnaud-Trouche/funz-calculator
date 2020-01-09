@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- =========================================================== -->
+	<!-- POM relationships -->
+	<!-- =========================================================== -->
+
+	<!-- Parent Maven coordinates -->
+	<parent>
+		<groupId>org.funz</groupId>
+		<artifactId>funz-parent</artifactId>
+		<version>1.9.0-SNAPSHOT</version>
+	</parent>
+
+	<!-- Maven coordinates -->
+	<artifactId>funz-calculator</artifactId>
+
+
+	<!-- Dependencies -->
+	<dependencies>
+		<dependency>
+			<groupId>org.funz</groupId>
+			<artifactId>funz-core</artifactId>
+			<version>1.9.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ftpserver</groupId>
+			<artifactId>ftpserver-core</artifactId>
+			<version>${ftpserver.core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.ftpserver</groupId>
+			<artifactId>ftplet-api</artifactId>
+			<version>${ftpserver.core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.mina</groupId>
+			<artifactId>mina-core</artifactId>
+			<version>2.0.16</version>
+		</dependency>
+		<dependency>
+			<groupId>org.knowhowlab.osgi</groupId>
+			<artifactId>sigar</artifactId>
+			<version>1.6.5_01</version>
+			<type>bundle</type>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.8.2</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<!-- =========================================================== -->
+	<!-- General project information -->
+	<!-- =========================================================== -->
+
+	<!-- General project information -->
+	<name>Funz calculator</name>
+
+	<!-- Project licenses -->
+	<licenses>
+		<license>
+			<name>BSD 2-Clause "Simplified" License</name>
+		</license>
+	</licenses>
+
+	<!-- =========================================================== -->
+	<!-- Build settings -->
+	<!-- =========================================================== -->
+
+	<!-- Packaging -->
+	<packaging>bundle</packaging>
+
+	<!-- Properties -->
+	<properties>
+		<ftpserver.core.version>1.1.1</ftpserver.core.version>
+	</properties>
+
+
+	<!-- Build -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<configuration>
+					<instructions>
+						<Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+						<Export-Package>
+							org.funz.calculator;version=${project.version},
+							org.funz.calculator.network;version=${project.version},
+							org.funz.calculator.plugin;version=${project.version},
+							org.funz.codes;version=${project.version},
+						</Export-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>org.funz.calculator.Calculator</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>generateConstants</id>
+						<phase>generate-sources</phase>
+						<configuration>
+							<target>
+								<ant antfile="${basedir}/build.xml">
+									<target name="generateCalculator" />
+								</ant>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<!-- =========================================================== -->
+	<!-- Build environment -->
+	<!-- =========================================================== -->
+
+	<!-- Development environment information -->
+	<ciManagement>
+		<system>Travis-CI</system>
+		<url>https://travis-ci.org/Funz/funz-core</url>
+	</ciManagement>
+
+	<!-- Distribution management -->
+	<distributionManagement />
+
+</project>

@@ -1,11 +1,13 @@
 package org.funz.calculator.plugin;
 
+import static org.funz.util.ParserUtils.getASCIIFileLines;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
-import org.funz.Constants;
+
+import org.funz.constants.Constants;
 import org.funz.util.ParserUtils;
-import static org.funz.util.ParserUtils.getASCIIFileLines;
 
 /**
  * Offers classical code launching as system command (using bash or cmd.exe).

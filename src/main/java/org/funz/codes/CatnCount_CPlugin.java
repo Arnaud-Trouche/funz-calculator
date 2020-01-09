@@ -3,6 +3,9 @@
  */
 package org.funz.codes;
 
+import static org.funz.util.ParserUtils.countLines;
+import static org.funz.util.ParserUtils.getASCIIFileLines;
+
 import java.io.File;
 import java.util.Properties;
 import org.funz.calculator.plugin.CodeLauncher;
@@ -11,8 +14,6 @@ import org.funz.calculator.plugin.DefaultCalculatorPlugin;
 import org.funz.calculator.plugin.DefaultCodeLauncher;
 import org.funz.calculator.plugin.OutputReader;
 import org.funz.util.ASCII;
-import static org.funz.util.ParserUtils.countLines;
-import static org.funz.util.ParserUtils.getASCIIFileLines;
 
 public class CatnCount_CPlugin extends DefaultCalculatorPlugin {
 

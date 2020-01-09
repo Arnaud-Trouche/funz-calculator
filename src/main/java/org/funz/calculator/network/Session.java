@@ -1,5 +1,7 @@
 package org.funz.calculator.network;
 
+import static org.funz.constants.Protocol.*;
+
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -13,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Properties;
-import static org.funz.Protocol.*;
+
 import org.funz.calculator.*;
 import org.funz.calculator.Calculator.SocketWriter;
 import org.funz.calculator.plugin.CalculatorPlugin;

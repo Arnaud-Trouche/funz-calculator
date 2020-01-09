@@ -1,9 +1,11 @@
 package org.funz.calculator.plugin;
 
+import static org.funz.util.ParserUtils.getLastLineContaining;
+
 import java.io.File;
 import java.io.FileFilter;
+
 import org.funz.util.ASCII;
-import static org.funz.util.ParserUtils.getLastLineContaining;
 
 /** Thread to follow progress by reading a matching line from a given file pattern (similar to grep usage)
  * @author richet
