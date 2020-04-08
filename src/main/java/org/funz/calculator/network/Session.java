@@ -1,6 +1,6 @@
 package org.funz.calculator.network;
 
-import static org.funz.constants.Protocol.*;
+import static org.funz.core.Protocol.*;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -21,7 +21,7 @@ import org.funz.calculator.Calculator.SocketWriter;
 import org.funz.calculator.plugin.CalculatorPlugin;
 import org.funz.calculator.plugin.DataChannel;
 import org.funz.calculator.plugin.DefaultCalculatorPlugin;
-import org.funz.log.LogCollector;
+import org.funz.core.LogCollector;
 import org.funz.util.ASCII;
 import org.funz.util.Disk;
 import org.funz.util.ZipTool;

@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 
-import org.funz.constants.Constants;
+import org.funz.core.Constants;
 import org.funz.util.ParserUtils;
 
 /**

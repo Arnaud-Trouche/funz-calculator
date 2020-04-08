@@ -9,10 +9,12 @@ import java.net.UnknownHostException;
 import org.apache.ftpserver.ConnectionConfigFactory;
 import org.apache.ftpserver.FtpServer;
 import org.apache.ftpserver.FtpServerFactory;
+import org.apache.ftpserver.ftplet.User;
 import org.apache.ftpserver.ftplet.UserManager;
 import org.apache.ftpserver.listener.ListenerFactory;
 import org.apache.ftpserver.usermanager.PropertiesUserManagerFactory;
-import org.apache.ftpserver.usermanager.impl.BaseUser;
+import org.apache.ftpserver.usermanager.UserFactory;
+//import org.apache.ftpserver.usermanager.impl.BaseUser;
 import org.apache.mina.core.session.IoSession;
 import org.funz.calculator.network.Session;
 
@@ -91,10 +93,11 @@ public class FTPCalculatorTunnel implements CalculatorTunnel, org.apache.ftpserv
             PropertiesUserManagerFactory userManagerFactory = new PropertiesUserManagerFactory();
             UserManager um = userManagerFactory.createUserManager();
 
-            BaseUser user = new BaseUser();
-            user.setName("anonymous");
-            //user.setPassword("");
-            user.setHomeDirectory(homedir.getAbsolutePath());
+            UserFactory userCreator = new UserFactory();
+            userCreator.setName("anonymous");
+            userCreator.setHomeDirectory(homedir.getAbsolutePath());
+            User user = userCreator.createUser();
+            
             um.save(user);
 
             serverFactory.setUserManager(um);
