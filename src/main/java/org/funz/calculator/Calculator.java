@@ -40,8 +40,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import org.hyperic.sigar.Sigar;
-import org.hyperic.sigar.SigarException;
+import oshi.hardware.HardwareAbstractionLayer;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -49,7 +49,6 @@ import java.util.ConcurrentModificationException;
 import java.util.ListIterator;
 import java.util.Locale;
 import org.apache.commons.exec.OS;
-import org.hyperic.sigar.CpuPerc;
 
 /** Calculation agent */
 public class Calculator implements Protocol {
@@ -59,7 +58,7 @@ public class Calculator implements Protocol {
     static double freecpu = 0;
     static double G = 1024 * 1024 * 1024;
     static NumberFormat nf = new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH));
-    private static Sigar sigar = new Sigar();
+    private static HardwareAbstractionLayer hardware;
 
     static String trimBin(long d) {
         return nf.format((double) d / G);
@@ -133,14 +132,12 @@ public class Calculator implements Protocol {
             freecpu = (double) sys.getAvailableProcessors();//Math.max(0, (double) sys.getAvailableProcessors() - sys.getSystemLoadAverage());
         } else {
             try {
-                mem = sigar.getMem().getActualFree();
-                CpuPerc[] cpus = sigar.getCpuPercList();
+                mem = Calculator.hardware.getMemory().getAvailable();
+                final double[] idles = Calculator.hardware.getProcessor().getSystemLoadAverage(1);
                 freecpu = 0;
-                for (CpuPerc cpu : cpus) {
-                    freecpu += cpu.getIdle();
+                for (double idle : idles) {
+                    freecpu += idle;
                 }
-            } catch (SigarException se) {
-                log("[SIGAR] cannot get system stats:" +se.getMessage());
             } catch (UnsatisfiedLinkError le) {
                 log("[SIGAR] failed to get system stats:" +le.getMessage());
             }

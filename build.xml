@@ -146,15 +146,6 @@
 				<include name="*.bat" />
 			</fileset>
 		</chmod>
-
-		<!-- Extract native libraries from sigar.jar -->
-		<unzip src="${dist.lib.dir}/sigar-${sigar.version}.jar" dest="${dist.lib.dir}">
-			<patternset>
-				<include name="*.so" />
-				<include name="*.dylib" />
-				<include name="*.dll" />
-			</patternset>
-		</unzip>
 	</target>
 
 
