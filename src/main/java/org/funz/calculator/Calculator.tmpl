@@ -3,6 +3,20 @@ package org.funz.calculator;
 import java.net.MalformedURLException;
 import org.funz.calculator.network.Host;
 import org.funz.calculator.network.Session;
+import org.funz.calculator.plugin.CalculatorPlugin;
+import org.funz.calculator.plugin.CodeLauncher;
+import org.funz.core.LogCollector;
+import org.funz.core.LogConsole;
+import org.funz.core.LogFile;
+import org.funz.core.LogNull;
+import org.funz.core.LogTicToc;
+import org.funz.core.Protocol;
+import org.funz.util.ASCII;
+import org.funz.util.Digest;
+import org.funz.util.Disk;
+import org.funz.util.TimePeriod;
+import org.funz.util.URLMethods;
+
 import java.lang.Thread.State;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -22,14 +36,6 @@ import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.funz.Protocol;
-import org.funz.calculator.plugin.CalculatorPlugin;
-import org.funz.calculator.plugin.CodeLauncher;
-import org.funz.util.ASCII;
-import org.funz.util.Digest;
-import org.funz.util.Disk;
-import org.funz.util.TimePeriod;
-import org.funz.util.URLMethods;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -40,16 +46,10 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.ConcurrentModificationException;
-import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Locale;
 import org.apache.commons.exec.OS;
 import org.hyperic.sigar.CpuPerc;
-import org.funz.log.LogCollector;
-import org.funz.log.LogConsole;
-import org.funz.log.LogFile;
-import org.funz.log.LogNull;
-import org.funz.log.LogTicToc;
 
 /** Calculation agent */
 public class Calculator implements Protocol {

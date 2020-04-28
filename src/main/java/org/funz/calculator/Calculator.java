@@ -1,32 +1,6 @@
 package org.funz.calculator;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.lang.Thread.State;
-import java.net.InetAddress;
 import java.net.MalformedURLException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.URL;
-import java.net.UnknownHostException;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
-import java.util.Calendar;
-import java.util.ConcurrentModificationException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Properties;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.apache.commons.exec.OS;
 import org.funz.calculator.network.Host;
 import org.funz.calculator.network.Session;
 import org.funz.calculator.plugin.CalculatorPlugin;
@@ -42,13 +16,40 @@ import org.funz.util.Digest;
 import org.funz.util.Disk;
 import org.funz.util.TimePeriod;
 import org.funz.util.URLMethods;
-import org.hyperic.sigar.CpuPerc;
-import org.hyperic.sigar.Sigar;
-import org.hyperic.sigar.SigarException;
+
+import java.lang.Thread.State;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Properties;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import org.hyperic.sigar.Sigar;
+import org.hyperic.sigar.SigarException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.ConcurrentModificationException;
+import java.util.ListIterator;
+import java.util.Locale;
+import org.apache.commons.exec.OS;
+import org.hyperic.sigar.CpuPerc;
 
 /** Calculation agent */
 public class Calculator implements Protocol {
@@ -501,24 +502,33 @@ public class Calculator implements Protocol {
     }
 
     void destroySessions(String why) {
-        for (Iterator<Session> i = _sessions.iterator(); i.hasNext();) {
-            try{
-                i.next().askToStop(false, why);
-            }catch(ConcurrentModificationException e){
-                // just skip...
+        if (_sessions != null) {
+            ListIterator<Session> iter = _sessions.listIterator();
+            while (iter.hasNext()) {
+                try {
+                    iter.next().askToStop(false, why);
+                } catch (ConcurrentModificationException e) {
+                    //do nothing
+                }
             }
         }
     }
 
     public void removeSession(Session s) {
-        synchronized (_sessions) {
-            _sessions.remove(s);
+        if (_sessions != null) {
+            ListIterator<Session> iter = _sessions.listIterator();
+            while (iter.hasNext()) {
+                if (iter.next().equals(s)) {
+                    iter.remove();
+                }
+            }
         }
     }
 
     void addSession(Session s) {
-        synchronized (_sessions) {
-            _sessions.add(s);
+        if (_sessions != null) {
+            ListIterator<Session> iter = _sessions.listIterator();
+            iter.add(s);
         }
     }
 
