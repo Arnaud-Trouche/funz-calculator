@@ -40,6 +40,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import oshi.SystemInfo;
 import oshi.hardware.HardwareAbstractionLayer;
 
 import java.text.DecimalFormat;
@@ -53,12 +54,11 @@ import org.apache.commons.exec.OS;
 /** Calculation agent */
 public class Calculator implements Protocol {
 
-    private static com.sun.management.OperatingSystemMXBean sys = (com.sun.management.OperatingSystemMXBean) java.lang.management.ManagementFactory.getOperatingSystemMXBean();
     static long mem = -1;
     static double freecpu = 0;
     static double G = 1024 * 1024 * 1024;
     static NumberFormat nf = new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH));
-    private static HardwareAbstractionLayer hardware;
+    private static HardwareAbstractionLayer hardware = new SystemInfo().getHardware();
 
     static String trimBin(long d) {
         return nf.format((double) d / G);
@@ -127,20 +127,11 @@ public class Calculator implements Protocol {
             }
         }
 
-        if (OS.isFamilyWindows()) {
-            mem = sys.getFreePhysicalMemorySize();
-            freecpu = (double) sys.getAvailableProcessors();//Math.max(0, (double) sys.getAvailableProcessors() - sys.getSystemLoadAverage());
-        } else {
-            try {
-                mem = Calculator.hardware.getMemory().getAvailable();
-                final double[] idles = Calculator.hardware.getProcessor().getSystemLoadAverage(1);
-                freecpu = 0;
-                for (double idle : idles) {
-                    freecpu += idle;
-                }
-            } catch (UnsatisfiedLinkError le) {
-                log("[SIGAR] failed to get system stats:" +le.getMessage());
-            }
+        mem = Calculator.hardware.getMemory().getAvailable();
+        final double[] idles = Calculator.hardware.getProcessor().getSystemLoadAverage(1);
+        freecpu = 0;
+        for (double idle : idles) {
+            freecpu += idle;
         }
 
         activity = activity + " (cpu=$$cpu$$;mem=$$mem$$;disk=$$disk$$;)";
